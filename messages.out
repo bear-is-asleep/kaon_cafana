@@ -1,0 +1,106 @@
+*********************EVENT********************
+N Primaries: 4
+mcprim pdg: 13
+mcprim pdg: 2112
+mcprim pdg: 2212
+mcprim pdg: 321
+**Nslc: 1
+**Nslc: 1
+N PFPs: 4
+pfp matched pdg: 13
+pfp matched pdg: 13
+pfp matched pdg: -2147483648
+pfp matched pdg: -2147483648
+
+*********************EVENT********************
+N Primaries: 3
+mcprim pdg: 13
+mcprim pdg: 2212
+mcprim pdg: 321
+**Nslc: 1
+**Nslc: 1
+N PFPs: 6
+pfp matched pdg: 13
+pfp matched pdg: 22
+pfp matched pdg: 22
+pfp matched pdg: 13
+pfp matched pdg: 2212
+pfp matched pdg: -2147483648
+
+*********************EVENT********************
+N Primaries: 5
+mcprim pdg: 13
+mcprim pdg: 2112
+mcprim pdg: 321
+mcprim pdg: 2212
+mcprim pdg: 2112
+**Nslc: 1
+**Nslc: 1
+N PFPs: 5
+pfp matched pdg: 13
+pfp matched pdg: 13
+pfp matched pdg: 11
+pfp matched pdg: 2212
+pfp matched pdg: -2147483648
+
+*********************EVENT********************
+N Primaries: 4
+mcprim pdg: 13
+mcprim pdg: 2212
+mcprim pdg: 321
+mcprim pdg: 2112
+**Nslc: 1
+**Nslc: 1
+N PFPs: 4
+pfp matched pdg: 13
+pfp matched pdg: 211
+pfp matched pdg: 2212
+pfp matched pdg: -2147483648
+
+*********************EVENT********************
+N Primaries: 16
+mcprim pdg: 13
+mcprim pdg: 2212
+mcprim pdg: 2212
+mcprim pdg: 2212
+mcprim pdg: 2212
+mcprim pdg: 2212
+mcprim pdg: 2212
+mcprim pdg: 2112
+mcprim pdg: 2112
+mcprim pdg: 2112
+mcprim pdg: 2112
+mcprim pdg: 2112
+mcprim pdg: 2112
+mcprim pdg: 2112
+mcprim pdg: 2112
+mcprim pdg: 321
+**Nslc: 1
+**Nslc: 1
+N PFPs: 4
+pfp matched pdg: 13
+pfp matched pdg: 22
+pfp matched pdg: 13
+pfp matched pdg: -2147483648
+
+*********************EVENT********************
+N Primaries: 8
+mcprim pdg: 13
+mcprim pdg: 2212
+mcprim pdg: 2112
+mcprim pdg: 2112
+mcprim pdg: 321
+mcprim pdg: 2212
+mcprim pdg: 2212
+mcprim pdg: 2112
+**Nslc: 1
+**Nslc: 1
+N PFPs: 8
+pfp matched pdg: 13
+pfp matched pdg: 13
+pfp matched pdg: 22
+pfp matched pdg: 22
+pfp matched pdg: 22
+pfp matched pdg: 2212
+pfp matched pdg: 2212
+pfp matched pdg: -2147483648
