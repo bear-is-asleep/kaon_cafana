@@ -29,12 +29,12 @@ const SpillVar kBestNuID([](const caf::SRSpillProxy* sp) {
 
 const SpillVar kTrueBestSlice([](const caf::SRSpillProxy* sp) -> unsigned {
     if(kCosmicSpill(sp))
-      return 999999;
-    std::cout<< "**Nslc: " << sp->slc.size() << std::endl;
+      return 99999;
+    //std::cout<< "**Nslc: " << sp->slc.size() << std::endl;
     auto const& nuid = sp->mc.nu[kBestNuID(sp)].index;
 
     float best_eff(-1.f);
-    unsigned id = 0, returnid = 999999;
+    unsigned id = 0, returnid = 99999;
 
     for(auto const &slc : sp->slc)
       {
@@ -52,21 +52,19 @@ const SpillVar kTrueBestSlice([](const caf::SRSpillProxy* sp) -> unsigned {
 const SpillVar kTrueKaonID([](const caf::SRSpillProxy* sp) -> unsigned {
   auto const& slc = sp->slc[kTrueBestSlice(sp)];
   int kaonID = 0;
-  std::cout << "N PFPs: " << slc.reco.pfp.size() << std::endl;
+  //std::cout << "N PFPs: " << slc.reco.pfp.size() << std::endl;
 
   auto const& pfps = slc.reco.pfp;
 
   for (auto const& pfp : pfps)
     {
       int pdg = abs(pfp.trk.truth.p.pdg);
-      std::cout << "pfp matched pdg: " << pdg << std::endl;
-      //if (pdg == 13){ /*Make sure this is a pdg of 321*/
-      //  return kaonID;
-      //}
+      if (pdg == 321){ /*Make sure this is a pdg of 321*/
+        return kaonID;
+      }
       kaonID++;
     }
-  //return 99999;
-  return 0;
+  return 9999;
   
   });
 
@@ -75,7 +73,7 @@ const SpillVar kTrueKaonID([](const caf::SRSpillProxy* sp) -> unsigned {
 //   auto const& pfps = sr->reco.pfp;
 //   int kaonID = 0;
 //   std::cout << "N PFPs: " << pfps.size() << std::endl;
-//   if (pfps.size() == 0) return 99999;
+//   if (pfps.size() == 0) return 9999;
 
 //   for (auto const& pfp : pfps)
 //     {
@@ -92,32 +90,187 @@ const SpillVar kTrueKaonID([](const caf::SRSpillProxy* sp) -> unsigned {
 const SpillVar kMCKaonID([](const caf::SRSpillProxy* sp) -> unsigned {
   auto const& nu = sp->mc.nu[kBestNuID(sp)];
   int kaonID = 0;
-  std::cout << "N Primaries: " << nu.prim.size() << std::endl;
+  //std::cout << "N Primaries: " << nu.prim.size() << std::endl;
 
   for (auto const& prim : nu.prim)
     {
       int pdg = abs(prim.pdg);
       if (pdg == 321){ /*Make sure this is a pdg of 321*/
+       std::cout << "Kaon ID: " << kaonID << std::endl;
        return kaonID;
       }
       kaonID++;
     }
-  //return 99999;
-  return 0; //temporary
+  return 9999;
   
   });
 
 const SpillVar kKaonTrueEnergy([](const caf::SRSpillProxy* sp) -> float {
-  auto const& slc = sp->slc[kTrueBestSlice(sp)];
+  auto const& bestslice = kTrueBestSlice(sp);
+  if (bestslice == 9999) return -9999;
+
+  auto const& slc = sp->slc[bestslice];
   auto const& pfps = slc.reco.pfp;
-  auto const& pfp = pfps[kTrueKaonID(sp)];
+  auto const& kaonID = kTrueKaonID(sp);
+  if (kaonID == 9999) return -9999;
+  auto const& pfp = pfps[kaonID];
   return pfp.trk.truth.p.genE;
 });
 
 const SpillVar kMCKaonEnergy([](const caf::SRSpillProxy* sp) -> float {
-  auto const& nu = sp->mc.nu[kBestNuID(sp)];
-  auto const& prim = nu.prim[kMCKaonID(sp)];
+  auto const& bestslice = kTrueBestSlice(sp);
+  if (bestslice == 9999) return 0;
+  auto const& slc = sp->slc[bestslice];
+  auto const& bestnu = kBestNuID(sp);
+  if (bestnu == 9999) return 0;
+  auto const& nu = sp->mc.nu[bestnu];
+  auto const& kaonID = kMCKaonID(sp);
+  if (kaonID == 9999) return 0;
+  auto const& prim = nu.prim[kaonID];
   return prim.genE;
 });
+
+const SpillVar kKaonTrueStartX([](const caf::SRSpillProxy* sp) -> float {
+  auto const& bestslice = kTrueBestSlice(sp);
+  if (bestslice == 9999) return -9999;
+  auto const& slc = sp->slc[bestslice];
+  auto const& pfps = slc.reco.pfp;
+  auto const& kaonID = kTrueKaonID(sp);
+  if (kaonID == 9999) return -9999;
+  auto const& pfp = pfps[kaonID];
+  return pfp.trk.truth.p.start.x;
+});
+
+const SpillVar kKaonTrueStartY([](const caf::SRSpillProxy* sp) -> float {
+  auto const& bestslice = kTrueBestSlice(sp);
+  if (bestslice == 9999) return -9999;
+  auto const& slc = sp->slc[bestslice];
+  auto const& pfps = slc.reco.pfp;
+  auto const& kaonID = kTrueKaonID(sp);
+  if (kaonID == 9999) return -9999;
+  auto const& pfp = pfps[kaonID];
+  return pfp.trk.truth.p.start.y;
+});
+
+const SpillVar kKaonTrueStartZ([](const caf::SRSpillProxy* sp) -> float {
+  auto const& bestslice = kTrueBestSlice(sp);
+  if (bestslice == 9999) return -9999;
+  auto const& slc = sp->slc[bestslice];
+  auto const& pfps = slc.reco.pfp;
+  auto const& kaonID = kTrueKaonID(sp);
+  if (kaonID == 9999) return -9999;
+  auto const& pfp = pfps[kaonID];
+  return pfp.trk.truth.p.start.z;
+});
+
+const SpillVar kKaonTrueEndX([](const caf::SRSpillProxy* sp) -> float {
+  auto const& bestslice = kTrueBestSlice(sp);
+  if (bestslice == 9999) return -9999;
+  auto const& slc = sp->slc[bestslice];
+  auto const& pfps = slc.reco.pfp;
+  auto const& kaonID = kTrueKaonID(sp);
+  if (kaonID == 9999) return -9999;
+  auto const& pfp = pfps[kaonID];
+  return pfp.trk.truth.p.end.x;
+});
+
+const SpillVar kKaonTrueEndY([](const caf::SRSpillProxy* sp) -> float {
+  auto const& bestslice = kTrueBestSlice(sp);
+  if (bestslice == 9999) return -9999;
+  auto const& slc = sp->slc[bestslice];
+  auto const& pfps = slc.reco.pfp;
+  auto const& kaonID = kTrueKaonID(sp);
+  if (kaonID == 9999) return -9999;
+  auto const& pfp = pfps[kaonID];
+  return pfp.trk.truth.p.end.y;
+});
+
+const SpillVar kKaonTrueEndZ([](const caf::SRSpillProxy* sp) -> float {
+  auto const& bestslice = kTrueBestSlice(sp);
+  if (bestslice == 9999) return -9999;
+  auto const& slc = sp->slc[bestslice];
+  auto const& pfps = slc.reco.pfp;
+  auto const& kaonID = kTrueKaonID(sp);
+  if (kaonID == 9999) return -9999;
+  auto const& pfp = pfps[kaonID];
+  return pfp.trk.truth.p.end.z;
+});
+
+const SpillVar kKaonTruePx([](const caf::SRSpillProxy* sp) -> float {
+  auto const& bestslice = kTrueBestSlice(sp);
+  if (bestslice == 9999) return -9999;
+  auto const& slc = sp->slc[bestslice];
+  auto const& pfps = slc.reco.pfp;
+  auto const& kaonID = kTrueKaonID(sp);
+  if (kaonID == 9999) return -9999;
+  auto const& pfp = pfps[kaonID];
+  return pfp.trk.truth.p.genp.x;
+});
+
+const SpillVar kKaonTruePy([](const caf::SRSpillProxy* sp) -> float {
+  auto const& bestslice = kTrueBestSlice(sp);
+  if (bestslice == 9999) return -9999;
+  auto const& slc = sp->slc[bestslice];
+  auto const& pfps = slc.reco.pfp;
+  auto const& kaonID = kTrueKaonID(sp);
+  if (kaonID == 9999) return -9999;
+  auto const& pfp = pfps[kaonID];
+  return pfp.trk.truth.p.genp.y;
+});
+
+const SpillVar kKaonTruePz([](const caf::SRSpillProxy* sp) -> float {
+  auto const& bestslice = kTrueBestSlice(sp);
+  if (bestslice == 9999) return -9999;
+  auto const& slc = sp->slc[bestslice];
+  auto const& pfps = slc.reco.pfp;
+  auto const& kaonID = kTrueKaonID(sp);
+  if (kaonID == 9999) return -9999;
+  auto const& pfp = pfps[kaonID];
+  return pfp.trk.truth.p.genp.z;
+});
+
+const SpillVar kKaonTruePhi([](const caf::SRSpillProxy* sp) -> float {
+  auto const& bestslice = kTrueBestSlice(sp);
+  if (bestslice == 9999) return -9999;
+  auto const& slc = sp->slc[bestslice];
+  auto const& pfps = slc.reco.pfp;
+  auto const& kaonID = kTrueKaonID(sp);
+  if (kaonID == 9999) return -9999;
+  auto const& pfp = pfps[kaonID];
+  return atan2(pfp.trk.truth.p.genp.y, pfp.trk.truth.p.genp.x);
+});
+
+const SpillVar kKaonTrueTheta([](const caf::SRSpillProxy* sp) -> float {
+  auto const& slc = sp->slc[kTrueBestSlice(sp)];
+  auto const& pfps = slc.reco.pfp;
+  auto const& kaonID = kTrueKaonID(sp);
+  if (kaonID == 9999) return -9999;
+  auto const& pfp = pfps[kaonID];
+  TVector3 p = TVector3(pfp.trk.truth.p.genp.x, pfp.trk.truth.p.genp.y, pfp.trk.truth.p.genp.z);
+  return acos(p.Z() / p.Mag());
+});
+
+const SpillVar kKaonCompleteness([](const caf::SRSpillProxy* sp) -> float {
+  auto const& bestslice = kTrueBestSlice(sp);
+  if (bestslice == 9999) return -9999;
+  auto const& slc = sp->slc[bestslice];
+  auto const& pfps = slc.reco.pfp;
+  auto const& kaonID = kTrueKaonID(sp);
+  if (kaonID == 9999) return -9999;
+  auto const& pfp = pfps[kaonID];
+  return pfp.trk.truth.bestmatch.hit_completeness;
+});
+
+const SpillVar kKaonPurity([](const caf::SRSpillProxy* sp) -> float {
+  auto const& bestslice = kTrueBestSlice(sp);
+  if (bestslice == 9999) return -9999;
+  auto const& slc = sp->slc[bestslice];
+  auto const& pfps = slc.reco.pfp;
+  auto const& kaonID = kTrueKaonID(sp);
+  if (kaonID == 9999) return -9999;
+  auto const& pfp = pfps[kaonID];
+  return pfp.trk.truth.bestmatch.hit_purity;
+});
+
 
 
