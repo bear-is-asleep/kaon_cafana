@@ -2,14 +2,12 @@
 
 ## Setup
 You will need to be in a container with `setup_sbnd.sh` loaded.
-```
-bash
+```bash
 . init.sh
 ```
 
 ## Running the analysis
-```
-bash
+```bash
 cafe -b -q KaonEvents.C
 ```
 
