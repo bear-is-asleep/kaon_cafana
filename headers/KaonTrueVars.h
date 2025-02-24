@@ -50,7 +50,9 @@ const SpillVar kTrueBestSlice([](const caf::SRSpillProxy* sp) -> unsigned {
   });
 
 const SpillVar kTrueKaonID([](const caf::SRSpillProxy* sp) -> unsigned {
-  auto const& slc = sp->slc[kTrueBestSlice(sp)];
+  auto const& bestslice = kTrueBestSlice(sp);
+  if (bestslice == 9999) return 9999;
+  auto const& slc = sp->slc[bestslice];
   int kaonID = 0;
   //std::cout << "N PFPs: " << slc.reco.pfp.size() << std::endl;
 
@@ -119,13 +121,13 @@ const SpillVar kKaonTrueEnergy([](const caf::SRSpillProxy* sp) -> float {
 
 const SpillVar kMCKaonEnergy([](const caf::SRSpillProxy* sp) -> float {
   auto const& bestslice = kTrueBestSlice(sp);
-  if (bestslice == 9999) return 0;
+  if (bestslice == 9999) return -9999;
   auto const& slc = sp->slc[bestslice];
   auto const& bestnu = kBestNuID(sp);
-  if (bestnu == 9999) return 0;
+  if (bestnu == 9999) return -9999;
   auto const& nu = sp->mc.nu[bestnu];
   auto const& kaonID = kMCKaonID(sp);
-  if (kaonID == 9999) return 0;
+  if (kaonID == 9999) return -9999;
   auto const& prim = nu.prim[kaonID];
   return prim.genE;
 });
@@ -241,7 +243,9 @@ const SpillVar kKaonTruePhi([](const caf::SRSpillProxy* sp) -> float {
 });
 
 const SpillVar kKaonTrueTheta([](const caf::SRSpillProxy* sp) -> float {
-  auto const& slc = sp->slc[kTrueBestSlice(sp)];
+  auto const& bestslice = kTrueBestSlice(sp);
+  if (bestslice == 9999) return -9999;
+  auto const& slc = sp->slc[bestslice];
   auto const& pfps = slc.reco.pfp;
   auto const& kaonID = kTrueKaonID(sp);
   if (kaonID == 9999) return -9999;
