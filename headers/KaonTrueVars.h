@@ -29,12 +29,12 @@ const SpillVar kBestNuID([](const caf::SRSpillProxy* sp) {
 
 const SpillVar kTrueBestSlice([](const caf::SRSpillProxy* sp) -> unsigned {
     if(kCosmicSpill(sp))
-      return 99999;
+      return 9999;
     //std::cout<< "**Nslc: " << sp->slc.size() << std::endl;
     auto const& nuid = sp->mc.nu[kBestNuID(sp)].index;
 
     float best_eff(-1.f);
-    unsigned id = 0, returnid = 99999;
+    unsigned id = 0, returnid = 9999;
 
     for(auto const &slc : sp->slc)
       {
